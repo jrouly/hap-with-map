@@ -1,0 +1,57 @@
+{
+
+"level" : [ 
+  {
+    "levelID" : "1",
+    "clusters" : [
+      {
+        "clusterID" : "D001",
+        "clusterSize" : "2",
+        "members" : [
+          { "docUUID" : "D000" },
+          { "docUUID" : "D001" }
+        ] 
+      },
+      {
+        "clusterID" : "D003",
+        "clusterSize" : "2",
+        "members" : [
+          { "docUUID" : "D002" },
+          { "docUUID" : "D003" }
+        ]
+      }
+    ]
+  },
+  {
+    "levelID" : "2",
+    "clusters" : [
+      {
+        "clusterID" : "D002",
+        "clusterSize" : "4",
+        "members" : [
+          { "docUUID" : "D000" },
+          { "docUUID" : "D001" },
+          { "docUUID" : "D002" },
+          { "docUUID" : "D003" }
+        ]
+      }
+    ]
+  },
+  {
+    "levelID" : "3",
+    "clusters:" : [
+      {
+        "clusterID" : "D002",
+        "clusterSize" : "4",
+        "members" : [
+          { "docUUID" : "D000" },
+          { "docUUID" : "D001" },
+          { "docUUID" : "D002" },
+          { "docUUID" : "D003" }
+        ]
+      }
+    ]
+  }
+]
+
+}

@@ -1,0 +1,1 @@
+((time ./hierarchicalKMeans.sh) |& tee mahout.OUTPUT) &

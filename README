@@ -1,0 +1,24 @@
+Hierarchical Affinity Propagation & MapReduce
+Copyright 2013 Dillon Rose, Jean Michel Rouly, AMALTHEA REU Program
+
+
+
+NECESSARY LIBRARIES:
+
+The following libraries are necessary to compile
+and excute this code, in addition to an existing
+Apache Hadoop install and configuration.
+
+
+Build time:
+Apache Commons Logging      commons-logging-ver.jar
+Apache Hadoop Core          hadoop-core-ver.jar
+Apache Mahout Core          mahout-core-ver.jar
+Apache Mahout Core Job      mahout-core-ver-job.jar
+Apache Mahout Integration   mahout-integraiton-ver.jar
+
+Run time:
+Apache Commons Logging      commons-logging-ver.jar
+Apache Mahout Core          mahout-core-ver.jar
+Apache Mahout Core Job      mahout-core-ver-job.jar
+Apache Mahout Integration   mahout-integraiton-ver.jar

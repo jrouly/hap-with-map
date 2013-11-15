@@ -1,0 +1,1 @@
+elastic-mapreduce --jobflow $1 --json shapes.json

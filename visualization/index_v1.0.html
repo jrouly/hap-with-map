@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>REU Data Visualization for HAP</title>
+	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+	<!--Stylesheets for tooltips-->
+	<link rel="stylesheet" type="text/css" href="css/styles.css">
+	<link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.2.1.min.css">
+<!-- 	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.1/jquery.mobile-1.2.1.min.css" /> -->
+	<link href="css/tipsy.css" rel="stylesheet" type="text/css" />
+<!-- 	<!-- Get js from online resources --> -->
+<!-- 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.2.min.js"></script>  -->
+<!-- 	<script type="text/javascript" src="http://code.jquery.com/mobile/1.2.1/jquery.mobile-1.2.1.min.js"></script> -->
+<!-- 	<!-- JavaScript for D3.js --> -->
+<!-- 	<script src="http://d3js.org/d3.v3.min.js"></script> -->
+
+	<!-- Get .js references from offline resources -->
+	<script type="text/javascript" src="js/d3.v3/d3.v3.js"></script>
+	<script type="text/javascript" src="js/d3.v3/d3.v3.min.js"></script>
+	<script type="text/javascript" src="js/jquery/jquery-1.6.2.min.js"></script>
+	<script type="text/javascript" src="js/jquery/jquery.mobile-1.2.1.min.js"></script>	
+	<script type="text/javascript" src="js/jquery.tipsy.js"></script>
+	<script type="text/javascript" src="js/scripts.js"></script>
+</head>
+<body>
+		<script type="text/javascript">
+		// global variable to keep AP level value
+		var _level = 1;
+		function onLevelChange (){
+			//alert("Selected value is: " + $('#selAPlevel').val())
+			// get selected AP level value
+			_level = $('#selAPlevel').val();
+			// read the file from the server (assumed that each file contains one level specified by file name)
+			d3.csv("data/AP" + _level + ".csv", updateData());
+		};
+		
+		$( '#mainPage' ).live( 'pagecreate',function(event){
+			//alert( "This page was just enhanced by jQuery Mobile!" );
+			  $('#selAPlevel').change(onLevelChange);
+			});
+		</script> <!-- onLevelChange -->
+		
+	<div data-role="page" id="mainPage">
+		<div data-role="header" id="header">
+				<h1> REU Data Visualization</h1>
+				<a href="http://research2.fit.edu/ice/" id="homepage" data-role="button" data-ajax="false" data-icon="home" data-direction="reverse" class="ui-btn-left jqm-home">&nbsp;&nbsp;&nbsp;Home&nbsp;&nbsp;&nbsp;</a>
+		</div> <!-- end for header -->
+		<div data-role="content" id="content">
+
+					<fieldset class="ui-grid-b">
+						<div class="ui-block-a">
+							<label for="selDataSet" class="select" style="text-align: center">Select dataset:</label>
+							<select id="selDataSet" name="selDataSet" data-native-menu="false">
+								<option value="d1">Dataset1</option>
+								<option value="d2">Dataset2</option>
+								<option value="d3">Dataset3</option>
+								<option value="d4">Dataset4</option>
+								<option value="d5">Dataset5</option>
+							</select>
+						</div>
+						<div class="ui-block-b">
+							<label for="selGraphType" class="select" style="text-align: center">Select graph type:</label>
+							<select id="selGraphType" name="selGraphType" data-native-menu="false">
+								<option value="g1">Forced bubles</option>
+								<option value="g2">Graph2</option>
+								<option value="g3">Graph3</option>
+							</select>
+						</div>
+						<div class="ui-block-c" id="idAPlevel">
+							<label for="selAPlevel" class="select" style="text-align: center">Select graph type:</label>
+							<select id="selAPlevel" name="selAPlevel" data-native-menu="false">
+								<option value="1">Level 1</option>
+								<option value="2">Level 2</option>
+								<option value="3">Level 3</option>
+								<option value="4">Level 4</option>
+								<option value="5">Level 5</option>
+							</select>
+						</div>
+					</fieldset>
+				
+			<div >
+				
+			</div> <!-- end for idAPlevel -->
+	
+	<div id="idD3">
+		<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="svg" ></svg>
+		<script type="text/javascript">
+			//var color = d3.scale.category20().range(d3.range(200));
+			var padding = 6,
+					radius = d3.scale.sqrt().range([0,10]);
+			var margin = {top: 0, right: 0, bottom: 0, left: 0},
+					width = 960,
+					height = 500,
+					sourceSize = 6,
+					targetSize = 12;
+			// initialize data object. this object stores radius, color, and name properties
+			var data = [];
+			// initialize all objects used inside d3.csv call
+			var force;
+			
+ 			// create a svg container within svg object
+			var svg = d3.select("#svg")
+						.attr("width", width + margin.left + margin.right)
+						.attr("height", height + margin.top + margin.bottom)
+							// append a group for visualization
+							.append("g")
+								.attr("id", "idVis")
+								.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+					
+			// add legend
+			var svgLegend = svg.append("g")
+				.attr("id","idLegend");
+				
+			var legendData = [{"title" : "Follower","radius" : sourceSize, "cx" : width - 50, "cy" : height - 50},
+		       {"title" : "Exemplar","radius" : targetSize, "cx" : width - 50, "cy" : height - 60}];
+			var legend = svg.append("g")
+				.attr("class", "legend")
+				.attr("height", 40)
+				.attr("width", 40)
+				.attr('transform', 'translate(-20,50)')    
+
+			legend.selectAll('circle')
+				.data([legendData])
+				.enter()
+				.append("circle")
+					.attr("r", function(d) { return d.radius; })			// define a circle radius based on value in nodes object
+					.style("fill", "black")
+					.attr("cx", function(d) { return d.cx; })
+					.attr("cy", function(d) { return d.cy; });
+			
+// 			legend.selectAll('text')
+// 				      .data(legendData)
+// 				      .enter()
+// 				      .append("text")
+// 					  .attr("x", width - 52)
+// 				      .attr("y", function(d, i){ return i *  20 + 9;})
+// 					  .text(function(d) {
+// 				        return d.title;
+// 				      });
+
+			var nodes;
+			var circles;
+			
+			// targets array keeps all unique targets (exemplars). it is used to check if a node is already defined as an exemplar
+			var targets = new Array();
+			
+			// updates data using a file with appropriate AP level
+			function updateData() {
+				data = [];
+				targets = [];
+				// initialize all objects used inside d3.csv call
+				force = null;
+				nodes = null;
+				//circle = null;
+				// get data again
+				d3.csv("data/Exemplars" + _level + ".csv", function(error, rows) {
+					// call csv2objects to convert rows from.csv file to object with radius, color, APlevel, and name properties
+					csv2object(rows);
+					var k = -1; 
+					// generates nodes object using .map function (maps data array into Objects to be used with d3.layout.force)
+					nodes = d3.range(data.length).map(function() {
+						k++;
+						return {
+							radius: data[k].radius,
+							color: data[k].color,
+							name: data[k].name,
+							APlevel: data[k].APlevel
+						};
+					}); // end of map
+					
+					// create a force layout and bound it to nodes object
+					force = d3.layout.force()
+						.nodes(nodes)								// used nodes object for nodes
+						.size([width, height])
+						.gravity(0)									// define gravity, default = 0
+						.charge(0)									// define charge, default = 1
+						.friction(0.7)
+						.on("tick", tick)						// define a function for a tick
+						.start();
+						console.log("Nodes for the selected lavel: " + _level);
+						console.log(nodes);
+					
+					// append circles on svg. bound nodes data object on each circle
+					circles = svg.selectAll("circle")
+						.data(nodes);
+					
+						// enter selection
+					circles.enter()
+						.append("circle");
+						
+					// exit
+					circles.exit().remove();					
+					
+					//update
+					circles
+							.attr("r", function(d) { return d.radius; })			// define a circle radius based on value in nodes object
+							.style("fill", function(d) { return d.color; })		// define a color value based on value in nodes object
+							.attr("cx", function(d) { return d.x; })
+							.attr("cy", function(d) { return d.y; })
+							.on("mouseover", function(){d3.select(this).style("stroke", "black").style("stroke-width",1.5);})
+        			.on("mouseout", function(){d3.select(this).style("stroke", "none");})
+							.call(force.drag);
+
+					$('svg circle').tipsy({ 
+				        gravity: 'w', 
+				        html: true, 
+				        title: function() {
+				        	var titles = this.__data__, t = titles.name;
+				        	return t; 
+				        }
+				      });
+					
+		        	
+				}); // read .csv file
+			}
+
+		</script>
+	</div> <!-- end for #idD3 -->
+		</div> <!-- end for content -->
+				
+		<div data-role="footer" data-position="fixed">
+			<h4>REU Project &copy; Summer 2013</h4>
+		</div><!-- /footer -->
+	</div> <!--  end for page -->
+
+	
+	
+</body>
+</html>

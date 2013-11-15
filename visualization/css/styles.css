@@ -1,0 +1,36 @@
+@CHARSET "UTF-8";
+body {
+	
+}
+
+#graphs {
+	background-color: white
+}
+
+div.bar {
+    display: inline-block;
+    width: 20px;
+    height: 75px;   /* We'll override height later */
+    background-color: teal;
+    margin-right: 2px;
+}
+
+/* circular hierarchy */
+.node circle {
+  fill: #fff;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+
+
+
+.legend {
+              padding: 5px;
+              font: 10px sans-serif;
+              background: yellow;
+              box-shadow: 2px 2px 1px #888;
+            }
+.title {
+              font: 13px sans-serif;
+            }

@@ -1,0 +1,1 @@
+elastic-mapreduce --create --name "Job Flow persistent HDFS (2 m3.2xlarge)" --alive --num-instances 3 --slave-instance-type m3.2xlarge --master-instance-type m1.small --key-pair mykeypair --hadoop-version 1.0.3 --bootstrap-action "s3://jrouly-test/job/bootstrap-install-mahout.sh" --ami-version 2.3.6

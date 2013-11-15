@@ -1,0 +1,26 @@
+{ 
+ "Name": "Step: Shapes788", 
+ "ActionOnFailure": "CANCEL_AND_WAIT", 
+ "HadoopJarStep": 
+ { 
+    "Jar": "s3n://jrouly-test/job/driver.jar", 
+    "Args": 
+    [ 
+       "points", 
+       "-i",
+       "s3n://jrouly-test/shapes",
+       "-w",
+       "working-dir",
+       "-l",
+       "3",
+       "-iter",
+       "4",
+       "-lambda",
+       "0.5",
+       "-smd",
+       "5",
+       "-n",
+       "788"
+    ] 
+ } 
+} 

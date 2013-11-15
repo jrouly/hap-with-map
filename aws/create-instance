@@ -1,0 +1,1 @@
+elastic-mapreduce --create --name "Job Flow persistent HDFS (20 m1.small)" --alive --num-instances 2 --slave-instance-type m1.small --master-instance-type m1.small --key-pair mykeypair --hadoop-version 1.0.3 --bootstrap-action "s3://jrouly-test/job/init-environment.sh" --args "jrouly-test","lib/library-1.0.3.lib" --ami-version 2.3.6

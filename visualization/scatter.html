@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>REU Data Visualization for HAP</title>
+	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+	<!--Stylesheets for tooltips-->
+	<link rel="stylesheet" type="text/css" href="css/styles.css">
+	<link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.2.1.min.css">
+<!-- 	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.1/jquery.mobile-1.2.1.min.css" /> -->
+	<link href="css/tipsy.css" rel="stylesheet" type="text/css" />
+<!-- 	<!-- Get js from online resources --> -->
+<!-- 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.2.min.js"></script>  -->
+<!-- 	<script type="text/javascript" src="http://code.jquery.com/mobile/1.2.1/jquery.mobile-1.2.1.min.js"></script> -->
+<!-- 	<!-- JavaScript for D3.js --> -->
+<!-- 	<script src="http://d3js.org/d3.v3.min.js"></script> -->
+
+	<!-- Get .js references from offline resources -->
+	<script type="text/javascript" src="js/d3.v3/d3.v3.js"></script>
+	<script type="text/javascript" src="js/d3.v3/d3.v3.min.js"></script>
+	<script type="text/javascript" src="js/jquery/jquery-1.6.2.min.js"></script>
+	<script type="text/javascript" src="js/jquery/jquery.mobile-1.2.1.min.js"></script>	
+	<script type="text/javascript" src="js/jquery.tipsy.js"></script>
+	<script type="text/javascript" src="js/scripts.js"></script>
+	<html xmlns:xlink="http://www.w3.org/1999/xlink"></html>
+	
+</head>
+<body>
+
+	<div data-role="page" id="mainPage">
+		<div data-role="header" id="header">
+				<h1> REU Data Visualization</h1>
+				<a href="http://research2.fit.edu/ice/" id="homepage" data-role="button" data-ajax="false" data-icon="home" data-direction="reverse" class="ui-btn-left jqm-home">&nbsp;&nbsp;&nbsp;Home&nbsp;&nbsp;&nbsp;</a>
+		</div> <!-- end for header -->
+		<div data-role="content" id="content">
+
+				
+			<div >
+				
+			</div> <!-- end for idAPlevel -->
+	
+	<div id="idD3">
+		<script type="text/javascript">
+		var margin = {top: 20, right: 20, bottom: 30, left: 40},
+	    width = 960 - margin.left - margin.right,
+	    height = 500 - margin.top - margin.bottom;
+
+	var x = d3.scale.linear()
+	    .range([0, width]);
+
+	var y = d3.scale.linear()
+	    .range([height, 0]);
+
+	var color = d3.scale.category10();
+
+	var xAxis = d3.svg.axis()
+	    .scale(x)
+	    .orient("bottom");
+
+	var yAxis = d3.svg.axis()
+	    .scale(y)
+	    .orient("left");
+
+	var svg = d3.select("#idD3").append("svg")
+	    .attr("width", width + margin.left + margin.right)
+	    .attr("height", height + margin.top + margin.bottom)
+	  .append("g")
+	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+	d3.csv("data/scatter/aggregation.csv", function(error, data) {
+	  data.forEach(function(d) {
+	    d.y = +d.y;
+	    d.x = +d.x;
+	    d.cluster = +d.idCluster;
+	  });
+		console.log(data);
+	  x.domain(d3.extent(data, function(d) { return d.x; })).nice();
+	  y.domain(d3.extent(data, function(d) { return d.y; })).nice();
+
+	  svg.append("g")
+	      .attr("class", "x axis")
+	      .attr("transform", "translate(0," + height + ")")
+	      .call(xAxis)
+	    .append("text")
+	      .attr("class", "label")
+	      .attr("x", width)
+	      .attr("y", -6)
+	      .style("text-anchor", "end")
+	      .text("x");
+
+	  svg.append("g")
+	      .attr("class", "y axis")
+	      .call(yAxis)
+	    .append("text")
+	      .attr("class", "label")
+	      .attr("transform", "rotate(-90)")
+	      .attr("y", 6)
+	      .attr("dy", ".71em")
+	      .style("text-anchor", "end")
+	      .text("y")
+
+	  svg.selectAll(".dot")
+	      .data(data)
+	    .enter().append("circle")
+	      .attr("class", "dot")
+	      .attr("r", 3.5)
+	      .attr("cx", function(d) { return x(d.x); })
+	      .attr("cy", function(d) { return y(d.y); })
+	      .style("fill", function(d) { return color(d.cluster); });
+
+	  var legend = svg.selectAll(".legend")
+	      .data(color.domain())
+	    .enter().append("g")
+	      .attr("class", "legend")
+	      .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+
+	  legend.append("rect")
+	      .attr("x", width - 18)
+	      .attr("width", 18)
+	      .attr("height", 18)
+	      .style("fill", color);
+
+	  legend.append("text")
+	      .attr("x", width - 24)
+	      .attr("y", 9)
+	      .attr("dy", ".35em")
+	      .style("text-anchor", "end")
+	      .text(function(d) { return "cluster" + d; });
+
+	});
+
+		</script>
+			
+	
+	</div> <!-- end for #idD3 -->
+		</div> <!-- end for content -->
+				
+		<div data-role="footer" data-position="fixed">
+			<h4>REU Project &copy; Summer 2013</h4>
+		</div><!-- /footer -->
+	</div> <!--  end for page -->
+	
+
+	
+	
+</body>
+</html>

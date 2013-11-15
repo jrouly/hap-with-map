@@ -1,0 +1,17 @@
+parsers
+root
+root.benchmark
+root.benchmark.canopy
+root.benchmark.kmeans
+root.hap
+root.hap.availability
+root.hap.cluster
+root.hap.responsibility
+root.hap.util
+root.input
+root.input.images
+root.input.lyrl2004
+root.input.points
+root.input.reuters21578
+root.input.util
+root.output
